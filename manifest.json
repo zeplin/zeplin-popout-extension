@@ -1,5 +1,5 @@
 {
-  "name": "Zeplin Popout Extension",
+  "name": "Zeplin Popout Tool",
   "version": "0.0.1",
   "manifest_version": 3,
   "description": "Zeplin Popout Tool in Chrome",
@@ -16,20 +16,11 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "content/content.js"
-      ],
-      "css": [
-        "content/content.css"
-      ],
-      "run_at": "document_idle",
-      "all_frames": true
+      "matches": ["*://*/*"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_idle"
     }
   ],
-  "permissions": [
-    "storage"
-  ]
+  "permissions": ["storage"]
 }
