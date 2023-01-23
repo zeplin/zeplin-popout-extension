@@ -13,18 +13,6 @@ function showInfo() {
   info.classList.remove("hidden");
 }
 
-// Chrome Events
-chrome.storage.sync.get("screenImageData", function (data) {
-  if (data && data.screenImageData) {
-    showScreenDetail();
-
-    popupImage.src = data.screenImageData.src;
-  } else {
-    showInfo();
-  }
-});
-// END - Chrome Events
-
 // DOM Events
 popupButton.addEventListener("click", () => {
   chrome.tabs.query(
@@ -59,6 +47,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
             popupImage.src = data.src;
             chrome.storage.sync.set({ screenImageData: data });
+          } else {
+            chrome.storage.sync.get("screenImageData", function (data) {
+              if (data && data.screenImageData) {
+                showScreenDetail();
+
+                popupImage.src = data.screenImageData.src;
+              } else {
+                showInfo();
+              }
+            });
           }
         }
       );

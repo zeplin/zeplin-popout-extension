@@ -85,6 +85,8 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
           width: screenImage.getAttribute("width"),
           height: screenImage.getAttribute("height"),
         });
+      } else {
+        response(null);
       }
     } else if (msg.subject === "compare") {
       chrome.storage.sync.get("screenImageData", function (data) {
