@@ -15,5 +15,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       target: { tabId: tab.id },
       files: cs.js,
     });
+
+    chrome.scripting.insertCSS({
+      target: { tabId: tab.id },
+      files: cs.css
+    });
   }
 });
