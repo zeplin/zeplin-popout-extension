@@ -19,6 +19,7 @@
   cursor: grab;
   border: 1px solid rgba(151, 145, 151, 0.25);
   overflow: hidden;
+  box-shadow: 0 2px 6px 0 rgba(85, 77, 86, 0.2);
 }
 
 .zeplin-extension-header {
