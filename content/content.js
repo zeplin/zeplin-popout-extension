@@ -72,6 +72,18 @@ function createOverlay(screenImageData) {
   overlay.append(wrapper);
   draggable(wrapper);
 
+  function handleKeyDown(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+
+      overlay.remove();
+
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }
+
+  document.addEventListener("keydown", handleKeyDown)
+
   return overlay;
 }
 
