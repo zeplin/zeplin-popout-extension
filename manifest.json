@@ -1,6 +1,6 @@
 {
   "name": "Zeplin Popout Tool",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "manifest_version": 3,
   "description": "Zeplin Popout Tool in Chrome",
   "icons": {
