@@ -13,26 +13,31 @@
   cursor: grab;
   border: 1px solid rgba(151, 145, 151, 0.25);
   overflow: hidden;
-  box-shadow: 0 2px 6px 0 rgba(85, 77, 86, 0.2);
+  box-shadow: 0 2px 8px 0 rgba(85, 77, 86, 0.3);
 }
 
 .zeplin-extension-header {
   width: 100%;
-  background: #f5f5f5;
+  background: #111;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 12px 0;
   box-shadow: 0 1px 2px #979197;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.zeplin-extension-button {
+  border: none;
+  text-align: center;
+  cursor: pointer;
 }
 
 .zeplin-extension-close-button {
   position: absolute;
   top: 12px;
   right: 12px;
-  border: none;
-  text-align: center;
-  cursor: pointer;
   width: 16px;
   height: 16px;
   background: #444;
@@ -43,4 +48,43 @@
   border-radius: 50%;
   font-size: 12px;
   padding-bottom: 2px;
+}
+
+.zeplin-extension-zoom-wrapper {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+}
+
+.zeplin-extension-zoom-wrapper .zeplin-extension-button {
+  font-size: 16px;
+  color: white;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.zeplin-extension-zoom-wrapper .zeplin-extension-button:hover {
+  color: #419bf9;
+}
+
+.zeplin-extension-zoom-label {
+  margin: 0 4px;
+  font-weight: 600;
+}
+
+.zeplin-extension-slider-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.zeplin-extension-slider {
+  margin: 0 4px;
 }

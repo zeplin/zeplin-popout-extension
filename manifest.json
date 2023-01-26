@@ -25,5 +25,16 @@
   "permissions": ["storage", "scripting"],
   "host_permissions": [
     "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "img/icSolid.png",
+        "img/icTransparent.png"
+      ]
+    }
   ]
 }

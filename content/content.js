@@ -3,7 +3,7 @@ chrome.runtime.sendMessage({
   subject: "showPageAction",
 });
 
-function draggable(el) {
+function makeZeplinOverlayDraggable(el) {
   el.addEventListener("mousedown", function (e) {
     if (e.target.tagName === "INPUT") {
       return;
@@ -29,7 +29,7 @@ function draggable(el) {
   });
 }
 
-function createOverlay(screenImageData) {
+function createZeplinOverlay(screenImageData) {
   const overlay = document.createElement("div");
   overlay.classList.add("zeplin-extension-overlay");
 
@@ -41,6 +41,49 @@ function createOverlay(screenImageData) {
   const header = document.createElement("div");
   header.classList.add("zeplin-extension-header");
 
+  // Zoom
+  let zoomIndex = 2;
+  const zoomLevels = [0.5, 0.75, 1, 1.5, 2];
+
+  const zoomWrapper = document.createElement("div");
+  zoomWrapper.classList.add("zeplin-extension-zoom-wrapper");
+
+  const zoomOutButton = document.createElement("button");
+  zoomOutButton.textContent = "-";
+  zoomOutButton.classList.add("zeplin-extension-button");
+  zoomOutButton.onclick = () => {
+    const prevZoom = zoomLevels[Math.max(--zoomIndex, 0)];
+    image.style.zoom = prevZoom;
+    zoomLabel.textContent = prevZoom * 100 + "%";
+  }
+  zoomWrapper.append(zoomOutButton);
+
+  const zoomLabel = document.createElement("span");
+  zoomLabel.classList.add("zeplin-extension-zoom-label");
+  zoomLabel.textContent = "100%";
+  zoomWrapper.append(zoomLabel);
+
+  const zoomInButton = document.createElement("button");
+  zoomInButton.textContent = "+";
+  zoomInButton.classList.add("zeplin-extension-button");
+  zoomInButton.onclick = () => {
+    const nextZoom = zoomLevels[Math.min(++zoomIndex, zoomLevels.length - 1)]
+    image.style.zoom = nextZoom
+    zoomLabel.textContent = nextZoom * 100 + "%";
+  }
+  zoomWrapper.append(zoomInButton);
+  header.append(zoomWrapper);
+
+  // Slider
+  const sliderWrapper = document.createElement("div");
+  sliderWrapper.classList.add("zeplin-extension-slider-wrapper");
+
+  const transparentIcon = document.createElement("img");
+  transparentIcon.width = 16;
+  transparentIcon.height = 12;
+  transparentIcon.src = chrome.runtime.getURL("img/icTransparent.png");
+  sliderWrapper.append(transparentIcon);
+
   const slider = document.createElement("input");
   slider.type = "range";
   slider.min = 10;
@@ -50,17 +93,27 @@ function createOverlay(screenImageData) {
   slider.oninput = (event) => {
     image.style.opacity = event.target.value / 100;
   };
-  header.append(slider);
+  sliderWrapper.append(slider);
 
+  const solidIcon = document.createElement("img");
+  solidIcon.width = 16;
+  solidIcon.height = 12;
+  solidIcon.src = chrome.runtime.getURL("img/icSolid.png");
+  sliderWrapper.append(solidIcon);
+
+  header.append(sliderWrapper);
+
+  // Close Button
   const closeButton = document.createElement("button");
   closeButton.textContent = "x";
-  closeButton.classList.add("zeplin-extension-close-button");
+  closeButton.classList.add("zeplin-extension-button", "zeplin-extension-close-button");
   closeButton.addEventListener("click", () => {
     overlay.remove();
   });
   header.append(closeButton);
   wrapper.append(header);
 
+  // Screen
   const image = document.createElement("img");
   image.classList.add("zeplin-extension-image");
   image.src = src;
@@ -70,8 +123,9 @@ function createOverlay(screenImageData) {
   wrapper.append(image);
 
   overlay.append(wrapper);
-  draggable(wrapper);
+  makeZeplinOverlayDraggable(wrapper);
 
+  // Overlay Events
   function handleKeyDown(event) {
     if (event.key === "Escape") {
       event.preventDefault();
@@ -107,7 +161,7 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
           data.screenImageData &&
           !document.querySelector(".zeplin-extension-overlay")
         ) {
-          const overlay = createOverlay(data.screenImageData);
+          const overlay = createZeplinOverlay(data.screenImageData);
           document.body.append(overlay);
         }
       });
