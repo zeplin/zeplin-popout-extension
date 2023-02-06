@@ -2,6 +2,7 @@ const screenDetail = document.querySelector(".screen-detail");
 const info = document.querySelector(".info");
 const popupImage = document.querySelector("#image");
 const popupButton = document.querySelector("#button");
+const screenName = document.querySelector(".header h1");
 
 function showScreenDetail() {
   screenDetail.classList.remove("hidden");
@@ -11,6 +12,11 @@ function showScreenDetail() {
 function showInfo() {
   screenDetail.classList.add("hidden");
   info.classList.remove("hidden");
+}
+
+function populatePopupHTML(data) {
+  popupImage.src = data.src;
+  screenName.textContent = "🖼 " + data.screenName
 }
 
 // DOM Events
@@ -44,15 +50,14 @@ window.addEventListener("DOMContentLoaded", () => {
         (data) => {
           if (data) {
             showScreenDetail();
+            populatePopupHTML(data);
 
-            popupImage.src = data.src;
             chrome.storage.sync.set({ screenImageData: data });
           } else {
             chrome.storage.sync.get("screenImageData", function (data) {
               if (data && data.screenImageData) {
                 showScreenDetail();
-
-                popupImage.src = data.screenImageData.src;
+                populatePopupHTML(data.screenImageData)
               } else {
                 showInfo();
               }

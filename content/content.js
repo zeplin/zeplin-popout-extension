@@ -105,7 +105,12 @@ function createZeplinOverlay(screenImageData) {
 
   // Close Button
   const closeButton = document.createElement("button");
-  closeButton.textContent = "x";
+  closeButton.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+      <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm2.219 4.305L8 6.523 5.781 4.305a1.049 1.049 0 0 0-1.473.003 1.04 1.04 0 0 0-.003 1.473L6.523 8l-2.218 2.219a1.049 1.049 0 0 0 .003 1.473c.41.41 1.067.41 1.473.003L8 9.477l2.219 2.218a1.049 1.049 0 0 0 1.473-.003c.41-.41.41-1.067.003-1.473L9.477 8l2.218-2.219a1.049 1.049 0 0 0-.003-1.473 1.04 1.04 0 0 0-1.473-.003z" fill="#FFF" fill-rule="evenodd"/>
+    </svg>
+  `;
+
   closeButton.classList.add("zeplin-extension-button", "zeplin-extension-close-button");
   closeButton.addEventListener("click", () => {
     overlay.remove();
@@ -145,11 +150,13 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
   if (msg.from === "popup") {
     if (msg.subject === "DOMInfo") {
       const screenImage = document.querySelector(".snapshotImage");
+      const screenName = document.querySelector("header h2").textContent;
       if (screenImage) {
         response({
           src: screenImage.src,
           width: screenImage.getAttribute("width"),
           height: screenImage.getAttribute("height"),
+          screenName
         });
       } else {
         response(null);
