@@ -114,6 +114,8 @@ function createZeplinOverlay(screenImageData) {
   closeButton.classList.add("zeplin-extension-button", "zeplin-extension-close-button");
   closeButton.addEventListener("click", () => {
     overlay.remove();
+
+    document.removeEventListener("keydown", handleKeyDown, true)
   });
   header.append(closeButton);
   wrapper.append(header);
@@ -132,16 +134,47 @@ function createZeplinOverlay(screenImageData) {
 
   // Overlay Events
   function handleKeyDown(event) {
-    if (event.key === "Escape") {
-      event.preventDefault();
+    const dist = event.shiftKey ? 10 : 1;
+    
+    switch (event.key) {
+      case "Escape":
+        event.preventDefault();
 
-      overlay.remove();
+        overlay.remove();
+        document.removeEventListener("keydown", handleKeyDown, true)
+        break;
+    
+      case "ArrowUp":
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      
+        wrapper.style.top = parseInt(wrapper.style.top) - dist + "px";
+        break;
+      
+      case "ArrowRight":
+        event.preventDefault();
+        event.stopImmediatePropagation();
 
-      document.removeEventListener("keydown", handleKeyDown)
+        wrapper.style.left = parseInt(wrapper.style.left) + dist + "px";
+        break;
+      
+      case "ArrowDown":
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        wrapper.style.top = parseInt(wrapper.style.top) + dist + "px";
+        break;
+
+      case "ArrowLeft":  
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        wrapper.style.left = parseInt(wrapper.style.left) - dist + "px";
+        break;
     }
   }
 
-  document.addEventListener("keydown", handleKeyDown)
+  document.addEventListener("keydown", handleKeyDown, true)
 
   return overlay;
 }
